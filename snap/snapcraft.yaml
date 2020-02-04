@@ -1,0 +1,83 @@
+name: test-snapd-ubuntu-core-initramfs
+base: core20
+version: "0.1"
+summary: ubuntu-core-initramfs pkg from snappy-dev as a snap
+description: |
+  Used to build kernels for snapd tests.
+
+grade: stable
+confinement: strict
+
+layout:
+  # ubuntu-core-initramfs hard-codes the location of dracut-install
+  /usr/lib/dracut/dracut-install:
+    symlink: $SNAP/usr/lib/dracut/dracut-install
+  # depmod hard-codes this directory
+  /etc/depmod.d:
+    bind: $SNAP/etc/depmod.d
+  # while ubuntu-core-initramfs does support a --root option, it doesn't work
+  # very well :-(
+  /usr/lib/ubuntu-core-initramfs:
+    bind: $SNAP_DATA/usr/lib/ubuntu-core-initramfs
+
+plugs:
+  home:
+  hardware-observe:
+
+apps:
+  ubuntu-core-initramfs:
+    command: usr/bin/ubuntu-core-initramfs
+    adapter: full
+  repack-kernel-snap:
+    command: bin/repack-kernel-snap.sh
+    adapter: full
+  # TODO: add back these apps, as they are probably useful generally speaking
+  # easy version that just needs kernelver, kerneldir, and output opts
+  # example usage (as root):
+  # $ test-snapd-ubuntu-core-initramfs.create-initrd --kernelver 5.4.0-12-generic --output $HOME/initramfs.img  --kerneldir $HOME/modules
+  # create-initrd:
+  #   # use SNAP_DATA for ubuntu-core-initramfs so that we can modify the
+  #   # initramfs - it's copied from $SNAP to $SNAP_DATA on install and
+  #   # post-refresh
+  #   command: usr/bin/ubuntu-core-initramfs create-initrd --root $SNAP/ --skeleton $SNAP_DATA/usr/lib/ubuntu-core-initramfs/
+  #   adapter: full
+  # # easy version that just needs kernelver, kernel, initrd, and output opts
+  # create-efi:
+  #   command: usr/bin/ubuntu-core-initramfs create-efi --root $SNAP/ --stub $SNAP/usr/lib/ubuntu-core-initramfs/efi/linuxx64.efi.stub --key $SNAP/usr/lib/ubuntu-core-initramfs/snakeoil/PkKek-1-snakeoil.key --cert $SNAP/usr/lib/ubuntu-core-initramfs/snakeoil/PkKek-1-snakeoil.pem
+  #   adapter: full
+
+parts:
+  scripts:
+    source: .
+    plugin: dump
+    stage:
+      - bin/repack-kernel-snap.sh
+  ubuntu-core-initramfs:
+    after: [snappy-dev-setup]
+    source: .
+    plugin: nil
+    stage-packages: [ubuntu-core-initramfs, squashfs-tools]
+  snappy-dev-setup:
+    source: https://git.launchpad.net/~canonical-kernel-snaps/+git/kernel-snaps-uc20
+    source-type: git
+    source-branch: master
+    plugin: nil
+    override-build: |
+      if [ "$(id -u)" -ne "0" ]; then
+        SUDO=sudo
+      else
+        SUDO=
+      fi
+      # install the snappy-dev/image PPA onto the build machine, only if it's 
+      # not already there - this makes building destructively a bit easier as 
+      # folks could set it up independently of this snap and this part turns 
+      # into a nop
+
+      if [ ! -f /etc/apt/trusted.gpg.d/snappy-dev-image.asc ]; then
+        $SUDO cp snappy-dev-image.asc /etc/apt/trusted.gpg.d/
+      fi
+
+      if ! grep -q http://ppa.launchpad.net/snappy-dev/image/ubuntu /etc/apt/sources.list; then
+        echo "deb http://ppa.launchpad.net/snappy-dev/image/ubuntu focal main" | $SUDO tee -a /etc/apt/sources.list
+        $SUDO apt update -y -qq
+      fi
