@@ -28,7 +28,7 @@ layout:
   /usr/lib/ubuntu-core-initramfs:
     bind: $SNAP_DATA/usr/lib/ubuntu-core-initramfs
   /usr/lib/modules:
-    bind: $SNAP_DATA//usr/lib/ubuntu-core-initramfs/main/lib/modules
+    bind: $SNAP_DATA/lib/modules
 
 plugs:
   home:

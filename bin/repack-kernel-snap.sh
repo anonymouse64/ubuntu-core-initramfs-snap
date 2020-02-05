@@ -26,9 +26,10 @@ unsquashfs -d "$SNAP_UNPACK_DIR" "$1"
 KERNEL_VER=$(ls "$SNAP_UNPACK_DIR/config"-* | grep -Po 'config-\K.*')
 
 # copy some module assets to ubuntu-core-initramfs's dir because it's silly and 
-# doesn't use the root dir for these things
+# doesn't use the root dir for these things 
 mkdir -p /usr/lib/ubuntu-core-initramfs/main/lib/modules
 cp -ar "$SNAP_UNPACK_DIR/lib/modules/$KERNEL_VER" /usr/lib/ubuntu-core-initramfs/main/lib/modules
+cp -ar "$SNAP_UNPACK_DIR/lib/modules/$KERNEL_VER" /usr/lib/modules
 
 # first rebuild initrd with $SNAP_DATA's copy of ubuntu-core-initramfs
 
