@@ -10,7 +10,7 @@ confinement: strict
 
 # TODO: enable ppc64el and s390x when ubuntu-core-initramfs is published for
 # those platforms
-# TODO: enable i386 when lp builders support core20 i386 snaps
+# TODO: enable i386 when lp builders support core20 i386 snaps(?)
 architectures:
   - build-on: amd64
   - build-on: arm64
@@ -27,6 +27,8 @@ layout:
   # very well :-(
   /usr/lib/ubuntu-core-initramfs:
     bind: $SNAP_DATA/usr/lib/ubuntu-core-initramfs
+  /usr/lib/modules:
+    bind: $SNAP_DATA//usr/lib/ubuntu-core-initramfs/main/lib/modules
 
 plugs:
   home:
