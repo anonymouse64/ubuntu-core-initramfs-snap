@@ -8,6 +8,14 @@ description: |
 grade: stable
 confinement: strict
 
+# TODO: enable ppc64el and s390x when ubuntu-core-initramfs is published for
+# those platforms
+# TODO: enable i386 when lp builders support core20 i386 snaps
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+  - build-on: armhf
+
 layout:
   # ubuntu-core-initramfs hard-codes the location of dracut-install
   /usr/lib/dracut/dracut-install:
