@@ -32,7 +32,7 @@ layout:
 
 plugs:
   home:
-  hardware-observe:
+  kernel-module-observe:
 
 apps:
   ubuntu-core-initramfs:
