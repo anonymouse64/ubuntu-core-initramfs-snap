@@ -55,6 +55,12 @@ apps:
   # create-efi:
   #   command: usr/bin/ubuntu-core-initramfs create-efi --root $SNAP/ --stub $SNAP/usr/lib/ubuntu-core-initramfs/efi/linuxx64.efi.stub --key $SNAP/usr/lib/ubuntu-core-initramfs/snakeoil/PkKek-1-snakeoil.key --cert $SNAP/usr/lib/ubuntu-core-initramfs/snakeoil/PkKek-1-snakeoil.pem
   #   adapter: full
+  unmkinitramfs:
+    command: usr/bin/unmkinitramfs
+    adapter: full
+  sbsign:
+    command: usr/bin/sbsign
+    adapter: full
 
 parts:
   scripts:
@@ -66,7 +72,7 @@ parts:
     after: [snappy-dev-setup]
     source: .
     plugin: nil
-    stage-packages: [ubuntu-core-initramfs, squashfs-tools]
+    stage-packages: [ubuntu-core-initramfs, squashfs-tools, sbsigntool, initramfs-tools-core]
   snappy-dev-setup:
     source: https://git.launchpad.net/~canonical-kernel-snaps/+git/kernel-snaps-uc20
     source-type: git
