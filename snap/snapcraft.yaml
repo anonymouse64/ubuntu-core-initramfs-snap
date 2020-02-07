@@ -61,6 +61,13 @@ apps:
   sbsign:
     command: usr/bin/sbsign
     adapter: full
+  # in case patching/inspecting the binaries manually is needed
+  objcopy:
+    command: usr/bin/objcopy
+    adapter: full
+  objdump:
+    command: usr/bin/objdump
+    adapter: full
 
 parts:
   scripts:
