@@ -2,7 +2,7 @@
 
 # copy the initramfs pkg skeleton dir from $SNAP to $SNAP_DATA if it doesn't 
 # already exist
-if [ ! -d $SNAP_DATA/usr/lib/ubuntu-core-initramfs/main ]; then
-    mkdir -p $SNAP_DATA/usr/lib/
-    cp -ar $SNAP/usr/lib/ubuntu-core-initramfs $SNAP_DATA/usr/lib
+if [ ! -d "$SNAP_DATA/usr/lib/ubuntu-core-initramfs/main" ]; then
+    mkdir -p "$SNAP_DATA/usr/lib/"
+    cp -ar "$SNAP/usr/lib/ubuntu-core-initramfs" "$SNAP_DATA/usr/lib"
 fi
