@@ -1,5 +1,5 @@
 #!/bin/bash -e
 
 # sync ubuntu-core-initramfs package contents from $SNAP to $SNAP_DATA
-mkdir -p $SNAP_DATA/usr/lib/
-cp -ar $SNAP/usr/lib/ubuntu-core-initramfs $SNAP_DATA/usr/lib
+mkdir -p "$SNAP_DATA/usr/lib"
+rsync -ar "$SNAP/usr/lib/ubuntu-core-initramfs" "$SNAP_DATA/usr/lib" || true

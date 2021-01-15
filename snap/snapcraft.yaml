@@ -79,7 +79,12 @@ parts:
     after: [snappy-dev-setup]
     source: .
     plugin: nil
-    stage-packages: [ubuntu-core-initramfs, squashfs-tools, sbsigntool, initramfs-tools-core]
+    stage-packages:
+      - rsync
+      - ubuntu-core-initramfs
+      - squashfs-tools
+      - sbsigntool
+      - initramfs-tools-core
   snappy-dev-setup:
     source: https://git.launchpad.net/~canonical-kernel-snaps/+git/kernel-snaps-uc20
     source-type: git
