@@ -8,6 +8,12 @@ description: |
 grade: stable
 confinement: strict
 
+# enable and remove the snappy-dev-setup part when this is not experimental
+# anymore, since with this in the YAML, we can't build in LP
+# package-repositories:
+#   - type: apt
+#     ppa: snappy-dev/image
+
 # TODO: enable ppc64el and s390x when ubuntu-core-initramfs is published for
 # those platforms
 architectures:
