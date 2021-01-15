@@ -10,7 +10,6 @@ confinement: strict
 
 # TODO: enable ppc64el and s390x when ubuntu-core-initramfs is published for
 # those platforms
-# TODO: enable i386 when lp builders support core20 i386 snaps(?)
 architectures:
   - build-on: amd64
   - build-on: arm64
@@ -96,15 +95,13 @@ parts:
       else
         SUDO=
       fi
-      # install the snappy-dev/image PPA onto the build machine, only if it's 
-      # not already there - this makes building destructively a bit easier as 
-      # folks could set it up independently of this snap and this part turns 
+      # install the snappy-dev/image PPA onto the build machine, only if it's
+      # not already there - this makes building destructively a bit easier as
+      # folks could set it up independently of this snap and this part turns
       # into a nop
-
       if [ ! -f /etc/apt/trusted.gpg.d/snappy-dev-image.asc ]; then
         $SUDO cp snappy-dev-image.asc /etc/apt/trusted.gpg.d/
       fi
-
       if ! grep -q http://ppa.launchpad.net/snappy-dev/image/ubuntu /etc/apt/sources.list; then
         echo "deb http://ppa.launchpad.net/snappy-dev/image/ubuntu focal main" | $SUDO tee -a /etc/apt/sources.list
         $SUDO apt update -y -qq
